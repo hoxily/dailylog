@@ -14,3 +14,32 @@
 2. 相比服装行业，家装行业的成本过高，难以个人独立试错。
 
 于是我又举出了拿着一个好想法，去资本市场拉投资的想法。并告诉他，时代变了。现在不再是单打独斗，倾家荡产搞投资的时代。但是罗元雷对于产品本身有非常强的掌控要求，不允许资本占据主动。对于他来说，这是他想要做的产品，而不是被资本推着走的产品。
+
+----
+
+visual studio 2019给如下的代码报告了警告，感觉像是一个bug：
+```c
+#include <stdio.h>
+
+struct psi_t {
+  const char* name;
+  int value;
+};
+
+struct psi_t global_items[3] = {
+  { "hello", 0 },
+  { "world", 1 },
+  { (const char*)-1, 0 } // 用(const char*)-1作为结束的标识。
+};
+
+int main() {
+  for (struct psi_t* ptr = &global_items[0]; ptr->name != (void*)-1; ptr++) {
+    printf("%s: %d\n", ptr->name, ptr->value);
+  }
+  return 0;
+}
+```
+C6295: for循环定义错误：“const char *”值始终介于“-2147483648”到“2147483647”范围之间。循环将无限执行。
+
+但是其实是OK的。循环能正常退出。
+此代码使用gcc -Wall -Werror编译，一切正常。
