@@ -15,3 +15,39 @@ and the repository exists.
 Connection to github.com closed by remote host.
 fatal: early EOF
 fatal: index-pack failed
+
+网突然好了，于是git clone成功了。
+
+----
+
+go mod tidy 命令下载依赖包总是失败。参照 https://www.cnblogs.com/smuzoey/p/13915368.html ，添加一个go env即可：
+
+go env -w GOPROXY=https://goproxy.io,direct
+
+虽然还是有点慢，但是比之前直接连接失败要好得多。
+
+----
+
+发现了另一个仓库，OpenD2 ( https://github.com/eezstreet/OpenD2 )。
+
+----
+
+遇到一个ZIP包格式的obj模型上传失败问题。https://www.tapd.cn/37349361/bugtrace/bugs/view/1137349361001013842
+
+出错原因是123MB的zip解包之后，obj文件有673MB大小。这时向JSZIP请求这个字符串，会因为Array.join报错：Uncaught (in promise) RangeError: Invalid string length
+
+优化的思路是，既然不能有这么长的String，那么当作Uint8Array来读取行不行呢？
+
+在本地测试代码上，又试一下单独上传解包后的 obj文件，使用FileReader的readAsText方法读取这个File时，并不会报错，但是读取的result结果是空字符串。
+
+----
+
+在网上找到的一篇文章是说，File 继承自 Blob，所以可以使用Blob的slice方法，进行切分。这样就可以实现文件分片读取。这也是一个优化点。参见：https://blog.csdn.net/lizixiang1993/article/details/45243547
+
+----
+
+遇到vscode提示 Blob 存在 arrayBuffer 函数，但是用typescript编译，却又报 Property 'arrayBuffer' does not exist on type 'Blob' 的错误。参见：https://github.com/microsoft/TypeScript/issues/34652 。看起来用FileReader的兼容性会更好一些。
+
+----
+
+问题已搞定。
