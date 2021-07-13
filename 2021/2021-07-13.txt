@@ -1,0 +1,17 @@
+2021年07月13日，星期二，杭州
+
+个人的力量太过单薄，所以我上互联网上搜索了一下 source code of diablo，结果真找到了相关的内容。一个是 GalaXyHaXz 重写的devilution，对应于 diablo 1。一个是OpenDiablo2项目组重写的OpenDiablo2.它们都属于那种只提供程序代码，但是不提供游戏数据文件的那种。*.mpq 这些数据文件的大小要比dll和exe要大得多。想要数据文件，需要用户先购买游戏。
+
+不过 OpenDiablo2 的实现语言是Go。这就蛋疼了。
+
+最近github访问老是出问题。仓库clone不下来。会出现下面这两种报错：
+1. ssh: Could not resolve hostname github.com: Name or service not known
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+2. fatal: the remote end hung up unexpectedly MiB | 2.76 MiB/s
+Connection to github.com closed by remote host.
+fatal: early EOF
+fatal: index-pack failed
