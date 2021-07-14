@@ -2,7 +2,7 @@
 
 昨天实现的逐行扫描优化处理，斌哥说他测试时不能正常使用。会出现Out of Memory的页面崩溃情况。除了Out of Memory错误，还会出现 DOMException: The requested file could not be read, typically due to permission problems that have occurred after a reference to a file was acquired.
 
-比较神奇怪的是，这个问题在我的Microsoft Edge和Google Chrome上并不出现。
+比较神奇怪的是，这两个问题在我的Microsoft Edge和Google Chrome上并不出现。
 
 在斌哥的电脑上的Chrome却能稳定的重现。我发现了他的Chrome右上角提示升级。跟他提了一句，于是苏斌告诉我，他的这个Chrome版片是故意安装的老版本Chrome。
 
