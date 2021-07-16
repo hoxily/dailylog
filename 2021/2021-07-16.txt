@@ -1,0 +1,17 @@
+2021年07月16日，星期五，杭州
+
+之前写的OBJ解析优化没有问题。但是问题出在字符的Encoding上。乱码倒不要紧，关键是需要与.mtl文件的Encoding保持一致。否则直接导致材质找不到，应用不上，在平台上上传后，预览界面显示成白模。
+
+----
+
+使用 zip entry filename encoding = obj file encoding = mtl file encoding 三者统一策略能应对该ZIP案例。
+
+但是我仔细想了一下，发现这样子还是有问题的。
+理论上，一个由clo3d 或者vstitcher导出的ZIP打包的obj模型文件，其obj file encoding 确实必定跟mtl file encoding一致。但是zip entry filename encoding就不一定一致了。而且有可能用户使用通用的ZIP包管理软件解包、重新打包。
+那么问题就来了，mtl文件里如果引用了超出ascii之外的字符串的文件名，并且zip entry filename编码与后两者不一致，这时使用getStringFromByteSequence获得的结果就是不匹配的。从而造成纹理没有正确应用。
+
+这里的核心问题就在于，没有合适的方法正确判定文本文档的字符编码。而ZIP entry filename的编码除了Unicode标志，其他没有Unicode标志的情况下没有方法正确判定字符编码。
+
+----
+
+除了字符串编码这个问题。OBJ的MTLLoader对于半透明材质的解析好像有问题，在平台上传后预览会看到黑色。
